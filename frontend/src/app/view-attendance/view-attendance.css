@@ -1,0 +1,21 @@
+.view-attendance-container {
+  padding: 20px;
+}
+
+.attendance-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.attendance-list li {
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,15 @@
+<div class="view-attendance-container">
+  <h2>Ver Asistencia</h2>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="attendanceRecords.length === 0 && !errorMessage">
+    <p>No hay registros de asistencia para mostrar.</p>
+  </div>
+  <div *ngIf="attendanceRecords.length > 0" class="attendance-list">
+    <h3>Tus Registros de Asistencia:</h3>
+    <ul>
+      <li *ngFor="let record of attendanceRecords">
+        Fecha: {{ record.date }} - Hora de Ingreso: {{ record.entryTime }}
+      </li>
+    </ul>
+  </div>
+</div>
