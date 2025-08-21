@@ -7,9 +7,11 @@
   <div *ngIf="attendanceRecords.length > 0" class="attendance-list">
     <h3>Tus Registros de Asistencia:</h3>
     <ul>
-      <li *ngFor="let record of attendanceRecords">
+      @for (record of attendanceRecords; track record.id) {
+      <li>
         Fecha: {{ record.date }} - Hora de Ingreso: {{ record.entryTime }}
       </li>
+      }
     </ul>
   </div>
 </div>

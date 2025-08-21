@@ -31,6 +31,6 @@ model Attendance {
   id        Int      @id @default(autoincrement())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
-  entryTime DateTime @default(now())
-  date      DateTime @db.Date
+  entryTime String
+  date      String
 }

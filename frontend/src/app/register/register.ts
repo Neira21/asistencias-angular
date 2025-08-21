@@ -5,14 +5,14 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true, // Add standalone: true
   imports: [FormsModule, ReactiveFormsModule, CommonModule], // Add CommonModule
-  templateUrl: './login.html',
-  styleUrl: './login.css'
+  templateUrl: './register.html',
+  styleUrl: './register.css'
 })
-export class LoginComponent { // Renamed class to LoginComponent
-  loginForm: FormGroup;
+export class RegisterComponent { // Renamed class to RegisterComponent
+  registerForm: FormGroup;
   errorMessage = signal<string | null>(null);
 
   constructor(
@@ -20,16 +20,19 @@ export class LoginComponent { // Renamed class to LoginComponent
     private authService: AuthService,
     private router: Router
   ) {
-    this.loginForm = this.fb.group({
+    this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      role: ['', Validators.required] // Added role field
     });
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
+    if (this.registerForm.valid) {
+
+      const { email, password, role } = this.registerForm.value;
+      //console.log('Registering user:', { email, password, role });
+      this.authService.register(email, password, role).subscribe({
         next: (response) => {
           if (this.authService.isAdmin()) {
             this.router.navigate(['/admin']);
@@ -40,8 +43,6 @@ export class LoginComponent { // Renamed class to LoginComponent
         error: (error) => {
           if (error instanceof Error && error.message === 'SERVER_UNAVAILABLE') {
             this.errorMessage.set('El servidor no está disponible. Intente más tarde.');
-          } else {
-            this.errorMessage.set('Correo o contraseña inválidos.');
           }
         }
       });

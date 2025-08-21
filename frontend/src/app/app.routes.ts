@@ -5,10 +5,12 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance';
 import { ViewAttendanceComponent } from './view-attendance/view-attendance';
 import { UserManagementComponent } from './user-management/user-management';
+import { RegisterComponent } from './register/register';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'admin',
     component: AdminDashboardComponent,

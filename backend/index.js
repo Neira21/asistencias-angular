@@ -64,7 +64,9 @@ app.post("/register", async (req, res) => {
         role: role ? role.toUpperCase() : "USER", // Ensure role is uppercase and defaults to USER
       },
     });
+    console.log("User registered:", user);
     res.status(201).json(user);
+
   } catch (error) {
     console.error("User registration failed:", error); // Log the actual error for debugging
     res.status(400).json({ error: "User registration failed. Email might already be in use." });
@@ -108,16 +110,42 @@ app.post("/attendance/mark", async (req, res) => {
   });
   if (!userExists) {
     return res.status(404).json({ error: "User not found." });
+  }  
+
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  console.log(today.toISOString().split('T')[0])
+  // Verificar si ya existe asistencia para hoy
+  const alreadyMarked = await prisma.attendance.findFirst({
+    where: {
+      userId: parseInt(userId),
+      date: today.toISOString().split('T')[0], // Format date to YYYY-MM-DD
+    },
+  });
+
+
+  if (alreadyMarked) {
+    console.log("Attendance already marked for today:", alreadyMarked);
+    return res.status(400).json({ error: "Attendance already marked for today." });
   }
 
   try {
+    
+    const pad = (n) => n.toString().padStart(2, '0');
+    const entryTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
     const attendance = await prisma.attendance.create({
       data: {
         userId: parseInt(userId),
-        date: new Date(), // Current date
-        entryTime: new Date(), // Current time
+        date: now, // Solo la fecha, la hora se ignora en el campo date
+        entryTime: entryTime // Solo la hora en formato string
       },
     });
+
+    console.log("Attendance marked:", now);
+
     res
       .status(201)
       .json({ message: "Attendance marked successfully!", attendance });
@@ -135,7 +163,12 @@ app.get("/attendance/:userId", async (req, res) => {
       where: { userId: parseInt(userId) },
       orderBy: { date: "desc" }, // Order by date descending
     });
-    res.status(200).json(attendanceRecords);
+    const formatedRecords = attendanceRecords.map(record => {
+      return {
+        ...record,
+      }
+    })
+    res.status(200).json(formatedRecords);
   } catch (error) {
     console.error("Error fetching attendance records:", error);
     res.status(500).json({ error: "Failed to fetch attendance records." });

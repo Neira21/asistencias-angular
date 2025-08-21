@@ -1,0 +1,36 @@
+<div class="login-container">
+  <h2>Register</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" />
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-message">
+        <div *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</div>
+        <div *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" formControlName="password" />
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-message">
+        <div *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <select id="role" formControlName="role">
+        <option value="" disabled>Select role</option>
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+      </select>
+      <div *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" class="error-message">
+        <div *ngIf="registerForm.get('role')?.errors?.['required']">Role is required.</div>
+      </div>
+
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    <div *ngIf="errorMessage()" class="error-message">{{ errorMessage() }}</div>
+  </form>
+</div>

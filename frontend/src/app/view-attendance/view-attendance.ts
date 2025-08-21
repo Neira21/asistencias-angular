@@ -37,11 +37,8 @@ export class ViewAttendanceComponent implements OnInit { // Renamed class to Vie
 
     this.http.get<AttendanceRecord[]>(`${this.apiUrl}/attendance/${userId}`).subscribe({
       next: (records) => {
-        this.attendanceRecords = records.map(record => ({
-          ...record,
-          entryTime: new Date(record.entryTime).toLocaleString(), // Format for display
-          date: new Date(record.date).toLocaleDateString() // Format for display
-        }));
+        console.log('Attendance records fetched:', records);
+        this.attendanceRecords = records
       },
       error: (error) => {
         console.error('Error fetching attendance records:', error);

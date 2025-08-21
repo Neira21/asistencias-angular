@@ -1,5 +1,7 @@
 <div class="mark-attendance-container">
   <h2>Marcar Asistencia</h2>
   <button (click)="markAttendance()">Marcar Hora de Ingreso</button>
-  <p *ngIf="attendanceMessage">{{ attendanceMessage }}</p>
+  @if(attendanceMessage){
+    <p>{{ attendanceMessage }}</p>
+  }
 </div>
