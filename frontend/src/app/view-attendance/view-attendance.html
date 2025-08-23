@@ -9,7 +9,7 @@
     <ul>
       @for (record of attendanceRecords; track record.id) {
       <li>
-        Fecha: {{ record.date }} - Hora de Ingreso: {{ record.entryTime }}
+        Fecha: {{ record.date | date:'shortDate' }} - Hora de Ingreso: {{ record.entryTime | date:'shortTime' }}
       </li>
       }
     </ul>

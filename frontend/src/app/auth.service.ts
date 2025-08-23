@@ -35,6 +35,8 @@ export class AuthService {
     }
   }
 
+  // verificar con console el register para que el usersubject tenga un valor
+
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(response => {

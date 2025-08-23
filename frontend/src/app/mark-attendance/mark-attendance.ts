@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-mark-attendance',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, JsonPipe],
   templateUrl: './mark-attendance.html',
   styleUrl: './mark-attendance.css'
 })
@@ -15,6 +15,14 @@ export class MarkAttendanceComponent { // Renamed class to MarkAttendanceCompone
   attendanceMessage: string | null = null;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
+
+  protected user: any = null;
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+   this.user = this.authService.currentUserValue;
+  }
 
   markAttendance(): void {
     const userId = this.authService.currentUserValue?.id;

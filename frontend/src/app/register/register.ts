@@ -23,7 +23,7 @@ export class RegisterComponent { // Renamed class to RegisterComponent
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      role: ['', Validators.required] // Added role field
+      role: [null] // Make role optional, default to null
     });
   }
 
@@ -31,12 +31,17 @@ export class RegisterComponent { // Renamed class to RegisterComponent
     if (this.registerForm.valid) {
 
       const { email, password, role } = this.registerForm.value;
-      //console.log('Registering user:', { email, password, role });
-      this.authService.register(email, password, role).subscribe({
+      const roleToSend = role === '' ? undefined : role;
+      console.log('Registering user:', { email, password, role });
+      this.authService.register(email, password, roleToSend).subscribe({
+        // Se puede usar el response.user.role y ya no el auhthService.isAdmin() o isUser()
         next: (response) => {
-          if (this.authService.isAdmin()) {
+          console.log('Register response:', response);
+          if (response.user.role === 'ADMIN') {
+            console.log('Redirecting to admin dashboard');
             this.router.navigate(['/admin']);
-          } else if (this.authService.isUser()) {
+          } else if (response.user.role === 'USER') {
+            console.log('Redirecting to user dashboard');
             this.router.navigate(['/user']);
           }
         },
