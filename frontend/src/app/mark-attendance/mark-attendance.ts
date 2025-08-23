@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mark-attendance',
   standalone: true,
-  imports: [CommonModule, JsonPipe],
+  imports: [CommonModule],
   templateUrl: './mark-attendance.html',
   styleUrl: './mark-attendance.css'
 })

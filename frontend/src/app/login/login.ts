@@ -49,4 +49,9 @@ export class LoginComponent { // Renamed class to LoginComponent
       this.errorMessage.set('Por favor ingrese un correo y contraseña válidos.');
     }
   }
+
+  goRegister(): void {
+    this.router.navigate(['/register']);
+
+  }
 }

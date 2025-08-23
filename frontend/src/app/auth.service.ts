@@ -46,8 +46,9 @@ export class AuthService {
     );
   }
 
-  register(email: string, password: string, role: 'USER' | 'ADMIN'): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, { email, password, role }).pipe(
+  register(email: string, password: string, role?: 'USER' | 'ADMIN'): Observable<AuthResponse> {
+    const body = role ? { email, password, role } : { email, password };
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, body).pipe(
       tap(response => {
         localStorage.setItem('currentUser', JSON.stringify(response.user));
         this.userSubject.next(response.user);

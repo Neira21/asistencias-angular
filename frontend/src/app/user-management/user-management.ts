@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../user.service';
 
 interface User {
   id: number;
@@ -17,7 +18,8 @@ interface User {
   styleUrl: './user-management.css'
 })
 export class UserManagementComponent implements OnInit { // Renamed class to UserManagementComponent
-  private apiUrl = 'http://localhost:3000';
+  userService = inject(UserService);
+
   users: User[] = [];
   userForm: FormGroup;
   errorMessage: string | null = null;
@@ -36,9 +38,10 @@ export class UserManagementComponent implements OnInit { // Renamed class to Use
   }
 
   getUsers(): void {
-    this.http.get<User[]>(`${this.apiUrl}/users`).subscribe({
+    this.userService.getUsers().subscribe({
       next: (users) => {
-        this.users = users;
+        console.log(users);
+        this.users = users.users;
       },
       error: (error) => {
         console.error('Error fetching users:', error);
@@ -49,7 +52,7 @@ export class UserManagementComponent implements OnInit { // Renamed class to Use
 
   onSubmit(): void {
     if (this.userForm.valid) {
-      this.http.post<User>(`${this.apiUrl}/register`, this.userForm.value).subscribe({
+      this.userService.createUser(this.userForm.value).subscribe({
         next: (user) => {
           this.successMessage = `User ${user.email} created successfully!`;
           this.errorMessage = null;

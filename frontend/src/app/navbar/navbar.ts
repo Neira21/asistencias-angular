@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal } from '@angular/core';
+import { Component, effect, OnInit, WritableSignal } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -14,7 +14,12 @@ export class NavbarComponent implements OnInit {
   isAdminUser: boolean = false;
   isRegularUser: boolean = false;
 
-  constructor(public authService: AuthService) {} // Make authService public
+  constructor(public authService: AuthService) {
+    effect(()=>{
+      console.log(this.isAdminUser , this.isRegularUser)
+    })
+  } // Make authService public
+
 
   ngOnInit(): void {
     this.authService.user.subscribe(user => {
