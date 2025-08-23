@@ -31,6 +31,14 @@ model Attendance {
   id        Int      @id @default(autoincrement())
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
-  entryTime String
-  date      String
+  date      DateTime
+  status    AttendanceStatus @default(ABSENT)
+  entryTime DateTime?
+
+  @@unique([userId, date], name: "UserDailyAttendance") // Correct way to define unique constraint on multiple fields // Optional, only if status is PRESENT
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
 }
