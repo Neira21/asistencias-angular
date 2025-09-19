@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model attendance {
+  id        Int               @id @default(autoincrement())
+  userId    Int
+  entryTime DateTime?
+  date      DateTime
+  status    attendance_status @default(ABSENT)
+  user      user              @relation(fields: [userId], references: [id], map: "Attendance_userId_fkey")
+
+  @@unique([userId, date], map: "Attendance_userId_date_key")
+}
+
+model user {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique(map: "User_email_key")
+  password   String
+  role       user_role    @default(USER)
+  attendance attendance[]
+}
+
+enum user_role {
+  USER
+  ADMIN
+}
+
+enum attendance_status {
+  PRESENT
+  ABSENT
+}
